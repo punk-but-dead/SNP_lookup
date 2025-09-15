@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNP Allele Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .error {
+            color: red;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <h1>SNP Genotype Conversion</h1>
+    
+    <form id="searchForm">
+        <div class="form-group">
+            <label for="rsID">rsID:</label>
+            <input type="text" id="rsID" placeholder="e.g., rs12908400" required>
+        </div>
+
+        <div class="form-group">
+            <label for="genotype">Genotype:</label>
+            <input type="text" id="genotype" placeholder="e.g., GC" required>
+        </div>
+        
+        <div class="form-group">
+
+            <label for="dataset">Dataset:</label>
+
+            <select name="dataset" id="dataset">
+                <option value="gnomADe:mid">gnomADe: Middle Eastern</option>
+                <option value="gnomADe:afr">gnomADe: African/African American</option>
+                <option value="gnomADe:sas">gnomADe: South Asian</option>
+                <option value="gnomADg:eas">gnomADg: East Asian</option>
+                <option value="gnomADe:fin">gnomADe: Finnish</option>
+                <option value="gnomADe:nfe">gnomADe: Non-Finnish European</option>
+                <option value="gnomADe:amr">gnomADe: Latino</option>
+                <option value="gnomADe:asj">gnomADe: Ashkenazi Jewish</option>
+                <option value="gnomADe:remaining">gnomADe: Remaining</option>
+                <option value="gnomADe:ALL">gnomADe: ALL</option>
+                <option value="gnomADg:mid">gnomADg: Middle Eastern</option>
+                <option value="gnomADg:afr">gnomADg: African/African American</option>
+                <option value="gnomADg:sas">gnomADg: South Asian</option>
+                <option value="gnomADg:eas">gnomADg: East Asian</option>
+                <option value="gnomADg:fin">gnomADg: Finnish</option>
+                <option value="gnomADg:nfe">gnomADg: Non-Finnish European</option>
+                <option value="gnomADg:amr">gnomADg: Latino</option>
+                <option value="gnomADg:ami">gnomADg: Amish</option>
+                <option value="gnomADg:asj">gnomADg: Ashkenazi Jewish</option>
+                <option value="gnomADg:remaining">gnomADg: Remaining</option>
+                <option value="gnomADg:ALL">gnomADg: ALL</option>
+                <option value="ALFA:SAMN10492699">ALFA: Latin American 1</option>
+                <option value="ALFA:SAMN10492700">ALFA: Latin American 2</option>
+                <option value="ALFA:SAMN10492703">ALFA: African</option>
+                <option value="ALFA:SAMN10492698">ALFA: African American</option>
+                <option value="ALFA:SAMN10492696">ALFA: African Others</option>
+                <option value="ALFA:SAMN10492695">ALFA: European</option>
+                <option value="ALFA:SAMN10492704">ALFA: Asian</option>
+                <option value="ALFA:SAMN10492697">ALFA: East Asian</option>
+                <option value="ALFA:SAMN10492702">ALFA: South Asian</option>
+                <option value="ALFA:SAMN10492701">ALFA: Other Asian</option>
+                <option value="ALFA:SAMN11605645">ALFA: Other</option>
+                <option value="ALFA:SAMN10492705">ALFA: Total</option>
+                <option value="GEM-J">GEM-J</option>
+                <option value="TOPMed">TOPMed</option>
+                <option value="1000GENOMES:phase_3:ACB">1000GENOMES: African-Caribbean</option>
+                <option value="1000GENOMES:phase_3:AFR">1000GENOMES: African</option>
+                <option value="1000GENOMES:phase_3:ALL">1000GENOMES: ALL</option>
+                <option value="1000GENOMES:phase_3:AMR">1000GENOMES: American</option>
+                <option value="1000GENOMES:phase_3:ASW">1000GENOMES: African-American SW</option>
+                <option value="1000GENOMES:phase_3:BEB">1000GENOMES: Bengali</option>
+                <option value="1000GENOMES:phase_3:CDX">1000GENOMES: Dai Chinese</option>
+                <option value="1000GENOMES:phase_3:CEU">1000GENOMES: CEPH</option>
+                <option value="1000GENOMES:phase_3:CHB">1000GENOMES: Han Chinese</option>
+                <option value="1000GENOMES:phase_3:CHS">1000GENOMES: Southern Han Chinese</option>
+                <option value="1000GENOMES:phase_3:CLM">1000GENOMES: Colombian</option>
+                <option value="1000GENOMES:phase_3:EAS">1000GENOMES: East Asian</option>
+                <option value="1000GENOMES:phase_3:ESN">1000GENOMES: Esan</option>
+                <option value="1000GENOMES:phase_3:EUR">1000GENOMES: European</option>
+                <option value="1000GENOMES:phase_3:FIN">1000GENOMES: Finnish</option>
+                <option value="1000GENOMES:phase_3:GBR">1000GENOMES: British</option>
+                <option value="1000GENOMES:phase_3:GIH">1000GENOMES: Gujarati</option>
+                <option value="1000GENOMES:phase_3:GWD">1000GENOMES: Gambian</option>
+                <option value="1000GENOMES:phase_3:IBS">1000GENOMES: Spanish</option>
+                <option value="1000GENOMES:phase_3:ITU">1000GENOMES: Indian</option>
+                <option value="1000GENOMES:phase_3:JPT">1000GENOMES: Japanese</option>
+                <option value="1000GENOMES:phase_3:KHV">1000GENOMES: Kinh Vietnamese</option>
+                <option value="1000GENOMES:phase_3:LWK">1000GENOMES: Luhya</option>
+                <option value="1000GENOMES:phase_3:MSL">1000GENOMES: Mende</option>
+                <option value="1000GENOMES:phase_3:MXL">1000GENOMES: Mexican-American</option>
+                <option value="1000GENOMES:phase_3:PEL">1000GENOMES: Peruvian</option>
+                <option value="1000GENOMES:phase_3:PJL">1000GENOMES: Punjabi</option>
+                <option value="1000GENOMES:phase_3:PUR">1000GENOMES: Puerto Rican</option>
+                <option value="1000GENOMES:phase_3:SAS">1000GENOMES: South Asian</option>
+                <option value="1000GENOMES:phase_3:STU">1000GENOMES: Sri Lankan</option>
+                <option value="1000GENOMES:phase_3:TSI">1000GENOMES: Tuscan</option>
+                <option value="1000GENOMES:phase_3:YRI">1000GENOMES: Yoruba</option>
+                <option value="GGVP:GWF">GGVP: The Gambia - Fula</option>
+                <option value="GGVP:GWD">GGVP: The Gambia - Mandinka</option>
+                <option value="GGVP:GWW">GGVP: The Gambia - Wolof</option>
+                <option value="GGVP:GWJ">GGVP: The Gambia - Jola</option>
+                <option value="GGVP:ALL">GGVP: ALL</option>
+            </select>
+<!--            <label for="dataset">Dataset:</label>-->
+<!--            <input type="text" id="dataset" value="1000GENOMES:phase_3:EUR" placeholder="e.g., 1000GENOMES:phase_3:EUR" required>-->
+        </div>
+        
+        <button type="submit" id="submitBtn">Enter</button>
+    </form>
+
+    <div id="error" class="error" style="display: none;"></div>
+    <div id="results"></div>
+
+    <script>
+        const form = document.getElementById('searchForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const errorDiv = document.getElementById('error');
+        const resultsDiv = document.getElementById('results');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const rsID = document.getElementById('rsID').value.trim();
+            const dataset = document.getElementById('dataset').value.trim();
+            const genotype = document.getElementById('genotype').value.trim();
+            
+            if (!rsID || !dataset) return;
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Loading...';
+            errorDiv.style.display = 'none';
+            resultsDiv.innerHTML = '';
+            
+            const url = `http://127.0.0.1:5000/search?rsID=${rsID}&dataset=${dataset}&genotype=${genotype}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    return response.json().then(data => {
+                // Handle the error message from Flask
+                        console.error('Error from server:', data.error);
+                // Display the error to the user
+                        alert(data.error);
+                    });
+                }
+                const data = await response.json();
+                displayResults(data);
+            } catch (err) {
+                errorDiv.textContent = `Error: ${err.message}`;
+                errorDiv.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enter';
+            }
+        });
+
+        function displayResults(data) {
+            const table = document.createElement('table');
+            
+            const headerRow = document.createElement('tr');
+            // headerRow.innerHTML = '<th>Parameter</th><th>Return</th>';
+            table.appendChild(headerRow);
+            
+            Object.entries(data).forEach(([key, value]) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${key}</td><td>${value}</td>`;
+                table.appendChild(row);
+            });
+            
+            resultsDiv.appendChild(table);
+        }
+    </script>
+</body>
+</html>
